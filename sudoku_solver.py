@@ -60,30 +60,6 @@ def find_potentials(b,pos):
 
     return tab
 
-def distinct (b,number,pos):
-    test = True
-     # check in row
-    for i in range(len(b)):
-        if number == b[pos[0]][i]:
-            test = False
-
-    # check in col
-    for j in range(len(b)):
-        if number == b[j][pos[1]]:
-            test = False
-
-    # check in grid
-    init, stop = (0, 3) if pos[0] // 3 == 0 else (2, 6) if pos[0] // 3 == 1 else (3, 9)
-    init2, stop2 = (0, 3) if pos[1] // 3 == 0 else (2, 6) if pos[1] // 3 == 1 else (3, 9)
-
-    for i in range(init, stop):
-        for j in range(init2, stop2):
-            if number == b[i][j]:
-                test = False
-
-    return test
-
-
 def solve(b):
     
     position = find_empty(b)
@@ -93,22 +69,18 @@ def solve(b):
     for pos in position:
         tab = find_potentials(b,pos)
         for number in tab:
-            check = distinct(b, number, pos)
-            if(check):
-                b[pos[0]][pos[1]] = number
-
-                if solve(b):
-                    return True
+            b[pos[0]][pos[1]] = number
+            
+            if solve(b):
+                return True
                 
-                b[pos[0]][pos[1]] = 0 # put it back to zero if it doesn't fit
+            b[pos[0]][pos[1]] = 0 # put it back to zero if it doesn't fit
                         
     return False
-
-
+    
 # main prog
-
 print_board(Board)
-if(solve(Board)):
-    print('\nprocessing...')
-    print('\nsolved board..\n')
-    print_board(Board)
+#print('\nprocessing...')
+print('\nsolved board..\n')
+print(solve(Board))
+print_board(Board)
