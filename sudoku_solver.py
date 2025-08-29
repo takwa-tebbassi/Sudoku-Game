@@ -50,8 +50,8 @@ def find_potentials(b,pos):
             tab.remove(b[j][pos[1]]) 
 
     # check in grid
-    init, stop = (0, 3) if pos[0] // 3 == 0 else (2, 6) if pos[0] // 3 == 1 else (3, 9)
-    init2, stop2 = (0, 3) if pos[1] // 3 == 0 else (2, 6) if pos[1] // 3 == 1 else (3, 9)
+    init, stop = (0, 3) if pos[0] // 3 == 0 else (3, 6) if pos[0] // 3 == 1 else (6, 9)
+    init2, stop2 = (0, 3) if pos[1] // 3 == 0 else (3, 6) if pos[1] // 3 == 1 else (6, 9)
 
     for i in range(init, stop):
         for j in range(init2, stop2):
@@ -66,21 +66,22 @@ def solve(b):
     if len(position) == 0:
         return True
     
-    for pos in position:
-        tab = find_potentials(b,pos)
-        for number in tab:
-            b[pos[0]][pos[1]] = number
-            
-            if solve(b):
-                return True
-                
-            b[pos[0]][pos[1]] = 0 # put it back to zero if it doesn't fit
-                        
+    i = 0
+    pos = position[i]
+    tab = find_potentials(b,pos)
+    for number in tab:
+        b[pos[0]][pos[1]] = number
+        if solve(b):
+            return True
+        
+        b[pos[0]][pos[1]] = 0 # put it back to zero if it doesn't fit
+        
     return False
-    
+           
 # main prog
+
 print_board(Board)
-#print('\nprocessing...')
+print('\nprocessing...')
 print('\nsolved board..\n')
-print(solve(Board))
+solve(Board)
 print_board(Board)
